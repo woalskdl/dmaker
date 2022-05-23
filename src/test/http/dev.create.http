@@ -1,0 +1,12 @@
+### Send POST request with json body
+POST http://localhost:8085/create-developer
+Content-Type: application/json
+
+{
+  "developerLevel": "JUNIOR",
+  "developerSkillType": "BACK_END",
+  "experienceYears": 2,
+  "memberId": "12345",
+  "name": "남재민3",
+  "age": 25
+}

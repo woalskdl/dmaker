@@ -1,0 +1,9 @@
+### Send POST request with json body
+PUT http://localhost:8085/developer/1234
+Content-Type: application/json
+
+{
+  "developerLevel": "SENIOR",
+  "developerSkillType": "BACK_END",
+  "experienceYears": 3
+}
