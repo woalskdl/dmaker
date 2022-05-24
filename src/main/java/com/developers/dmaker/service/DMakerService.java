@@ -140,9 +140,7 @@ public class DMakerService {
         validateDeveloperLevel(request.getDeveloperLevel(), request.getExperienceYears());
 
         developerRepository.findByMemberId(request.getMemberId())
-                .ifPresent((developer -> {
-                    throw new DMakerException(DUPLICATED_MEMBER_ID);
-                }));
+                .ifPresent((developer -> {throw new DMakerException(DUPLICATED_MEMBER_ID);}));
     }
 
     private void validateEditDeveloperRequest(String memberId, EditDeveloper.Request request) {

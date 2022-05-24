@@ -1,15 +1,14 @@
 package com.developers.dmaker.controller;
 
-import com.developers.dmaker.dto.CreateDeveloper;
-import com.developers.dmaker.dto.DeveloperDetailDto;
-import com.developers.dmaker.dto.DeveloperDto;
-import com.developers.dmaker.dto.EditDeveloper;
+import com.developers.dmaker.dto.*;
 import com.developers.dmaker.exception.DMakerException;
 import com.developers.dmaker.service.DMakerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -42,14 +41,7 @@ public class DMakerController {
         log.info("GET /developers HTTP/1.1");
         log.info("request  {}", request);
 
-        CreateDeveloper.Response response;
-        try {
-            response = dMakerService.createDeveloper(request);
-        } catch (DMakerException e) {
-            throw new DMakerException(e.getDMakerErrorCode(), e.getDetailMessage());
-        }
-
-        return response;
+        return dMakerService.createDeveloper(request);
     }
 
     @PutMapping("/developer/{memberId}")
