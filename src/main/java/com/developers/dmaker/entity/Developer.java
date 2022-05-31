@@ -1,5 +1,6 @@
 package com.developers.dmaker.entity;
 
+import com.developers.dmaker.dto.CreateDeveloper;
 import com.developers.dmaker.type.DeveloperLevel;
 import com.developers.dmaker.type.DeveloperSkillType;
 import com.developers.dmaker.code.StatusCode;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import static com.developers.dmaker.code.StatusCode.EMPLOYED;
 
 @Getter
 @Setter
