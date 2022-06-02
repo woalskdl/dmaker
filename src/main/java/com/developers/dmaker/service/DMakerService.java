@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 
 import static com.developers.dmaker.code.StatusCode.EMPLOYED;
 import static com.developers.dmaker.code.StatusCode.RETIRED;
-import static com.developers.dmaker.exception.DMakerErrorCode.*;
+import static com.developers.dmaker.exception.DMakerErrorCode.DUPLICATED_MEMBER_ID;
+import static com.developers.dmaker.exception.DMakerErrorCode.NO_DEVELOPER;
 
 @Service
 @RequiredArgsConstructor
@@ -100,7 +101,8 @@ public class DMakerService {
     @Transactional
     public DeveloperDetailDto editDeveloper(String memberId, EditDeveloper.Request request) {
 
-        validateDeveloperLevel(request.getDeveloperLevel(), request.getExperienceYears());
+//        validateDeveloperLevel(request.getDeveloperLevel(), request.getExperienceYears());
+        request.getDeveloperLevel().validateExperienceYears(request.getExperienceYears());
 
 //        Developer developer = getDeveloperByMemberId(memberId);
 //        setDeveloperFromRequest(request, developer);
@@ -149,23 +151,31 @@ public class DMakerService {
 
     private void validateCreateDeveloperRequest(@NonNull CreateDeveloper.Request request) {
         // business validation
-        validateDeveloperLevel(request.getDeveloperLevel(), request.getExperienceYears());
+//        validateDeveloperLevel(request.getDeveloperLevel(), request.getExperienceYears());
+        request.getDeveloperLevel().validateExperienceYears(request.getExperienceYears());
 
         developerRepository.findByMemberId(request.getMemberId())
-                .ifPresent((developer -> {throw new DMakerException(DUPLICATED_MEMBER_ID);}));
+                .ifPresent((developer -> {
+                    throw new DMakerException(DUPLICATED_MEMBER_ID);
+                }));
     }
 
     private void validateDeveloperLevel(@NonNull DeveloperLevel developerLevel, @NonNull Integer experienceYears) {
         // business validation
-        if (developerLevel == DeveloperLevel.SENIOR
-                && experienceYears < 10)
-            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCED);
+        developerLevel.validateExperienceYears(experienceYears);
 
-        if (developerLevel == DeveloperLevel.JUNGNIOR
-                && (experienceYears < 4 || experienceYears > 10))
-            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCED);
+//        if(experienceYears < developerLevel.getMinExperienceYears() || experienceYears > developerLevel.getMaxExperienceYears())
+//            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCED);
 
-        if (developerLevel == DeveloperLevel.JUNIOR && experienceYears > 4)
-            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCED);
+//        if (developerLevel == DeveloperLevel.SENIOR
+//                && experienceYears < MIN_SENIOR_EXPERIENCE_YEARS)
+//            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCED);
+//
+//        if (developerLevel == DeveloperLevel.JUNGNIOR
+//                && (experienceYears < MAX_JUNIOR_EXPERIENCE_YEARS || experienceYears > MIN_SENIOR_EXPERIENCE_YEARS))
+//            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCED);
+//
+//        if (developerLevel == DeveloperLevel.JUNIOR && experienceYears > MAX_JUNIOR_EXPERIENCE_YEARS)
+//            throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCED);
     }
 }
